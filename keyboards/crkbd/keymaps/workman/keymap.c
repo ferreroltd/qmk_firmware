@@ -16,11 +16,12 @@ extern uint8_t is_master;
 // The underscores don't mean anything - you can have a layer called STUFF or any other name.
 // Layer names don't all need to be of the same length, obviously, and you can also skip them
 // entirely and just use numbers.
-#define _QWERTY 4
 #define _WORKMAN 0
-#define _LOWER 1
-#define _RAISE 2
-#define _ADJUST 3
+#define _QWERTY 1
+#define _LOWER 2
+#define _RAISE 3
+#define _ADJUST 4
+
 
 enum custom_keycodes {
   QWERTY = SAFE_RANGE,
@@ -31,17 +32,16 @@ enum custom_keycodes {
   INSPECT
 };
 
-enum macro_keycodes {
-  KC_SAMPLEMACRO,
-};
-
 #define KC______ KC_TRNS
 #define KC_XXXXX KC_NO
 #define KC_LOWER LOWER
 #define KC_RAISE RAISE
 #define KC_RST   RESET
+
 #define KC_SCREENSOT_MAC SCREENSOT_MAC
 #define KC_INSPECT INSPECT
+#define KC_SWITCH_QWERTY TG(_QWERTY)
+
 #define KC_LTOG  RGB_TOG
 #define KC_LHUI  RGB_HUI
 #define KC_LHUD  RGB_HUD
@@ -68,24 +68,23 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                               //`--------------------'  `--------------------'
   ),
 
-    [_QWERTY] = LAYOUT_kc( \
-    //,-----------------------------------------.                ,-----------------------------------------.
-          TAB,     Q,     W,     E,     R,     T,                      Y,     U,     I,     O,     P,  BSPC,\
-    //|------+------+------+------+------+------|                |------+------+------+------+------+------|
-        CTLTB,     A,     S,     D,     F,     G,                      H,     J,     K,     L,  SCLN,  QUOT,\
-    //|------+------+------+------+------+------|                |------+------+------+------+------+------|
-         LSFT,     Z,     X,     C,     V,     B,                      N,     M,  COMM,   DOT,  SLSH,  RSFT,\
-    //|------+------+------+------+------+------+------|  |------+------+------+------+------+------+------|
-                                    ALTKN, LOWER, GUIEI,      SPC, RAISE, ENT \
-                                //`--------------------'  `--------------------'
-    ),
-
+  [_QWERTY] = LAYOUT_kc( \
+  //,-----------------------------------------.                ,-----------------------------------------.
+        TAB,     Q,     W,     E,     R,     T,                      Y,     U,     I,     O,     P,  BSPC,\
+  //|------+------+------+------+------+------|                |------+------+------+------+------+------|
+      CTLTB,     A,     S,     D,     F,     G,                      H,     J,     K,     L,  SCLN,  QUOT,\
+  //|------+------+------+------+------+------|                |------+------+------+------+------+------|
+       LSFT,     Z,     X,     C,     V,     B,                      N,     M,  COMM,   DOT,  SLSH,  RSFT,\
+  //|------+------+------+------+------+------+------|  |------+------+------+------+------+------+------|
+                                  GUIEI, LOWER, ALTKN,      SPC, RAISE, ENT \
+                              //`--------------------'  `--------------------'
+  ),
 
   [_RAISE] = LAYOUT_kc( \
   //,-----------------------------------------.                ,-----------------------------------------.
-        ESC,     1,     2,  LPRN,  RPRN,  UNDS,                   MINS,     7,     8,     9,   DOT,  BSPC,\
+        ESC,   F12,    F5,  LPRN,  RPRN,  UNDS,                   MINS,     7,     8,     9,   DOT,  BSPC,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
-      CTLTB, MUTE,     F2,  LCBR,  RCBR,  PIPE,                   PLUS,     4,     5,     6,  HOME,  ASTR,\
+      CTLTB, MUTE,     F2,  LCBR,  RCBR,  PIPE,                   PLUS,     4,     5,     6,  SLSH,  ASTR,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
        LSFT, XXXXX, XXXXX,  LBRC,  RBRC,  BSLS,                      0,     1,    2 ,    3,   EQL,   RSFT,\
   //|------+------+------+------+------+------+------|  |------+------+------+------+------+------+------|
@@ -97,7 +96,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,-----------------------------------------.                ,-----------------------------------------.
         ESC,  EXLM,    AT,  HASH,   DLR,  PERC,                   CIRC,  AMPR,  ASTR,  LPRN,  RPRN,  BSPC,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
-       TILD, GRAVE, XXXXX, XXXXX,   ENT, XXXXX,                   LEFT,  DOWN,    UP, RIGHT, XXXXX, XXXXX,\
+       TILD, GRAVE, XXXXX, XXXXX,   ENT, XXXXX,                   LEFT,  DOWN,    UP, RIGHT,  HOME,   END,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
        LSFT, XXXXX, XXXXX, XXXXX,   SPC, RIGHT,                  ALTKN, GUIEI,  LBRC,  RBRC,  BSLS,  TILD,\
   //|------+------+------+------+------+------+------|  |------+------+------+------+------+------+------|
@@ -107,7 +106,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_ADJUST] = LAYOUT_kc( \
   //,-----------------------------------------.                ,-----------------------------------------.
-  VOLD,MS_WH_LEFT, MS_WH_RIGHT, MS_UP,   VOLU,  MUTE,           XXXXX, XXXXX, XXXXX, XXXXX, XXXXX, XXXXX,\
+  VOLD,MS_WH_LEFT, MS_WH_RIGHT, MS_UP,   VOLU,  MUTE,           SWITCH_QWERTY, XXXXX, XXXXX, XXXXX, XXXXX, XXXXX,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
   XXXXX, LTOG, MS_LEFT, MS_DOWN, MS_RIGHT, XXXXX,               XXXXX, MS_BTN1,MS_BTN2, XXXXX, INSPECT, SCREENSOT_MAC,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
@@ -236,6 +235,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       break;
     case INSPECT:
       SEND_STRING(SS_LGUI(SS_RALT("i")));
+      return false;
       break;
   }
   return true;
