@@ -29,7 +29,7 @@ enum custom_keycodes {
   RAISE,
   ADJUST,
   SCREENSOT_MAC,
-  INSPECT
+  CHORE
 };
 
 #define KC______ KC_TRNS
@@ -39,7 +39,7 @@ enum custom_keycodes {
 #define KC_RST   RESET
 
 #define KC_SCREENSOT_MAC SCREENSOT_MAC
-#define KC_INSPECT INSPECT
+#define KC_CHORE CHORE
 #define KC_SWITCH_QWERTY TG(_QWERTY)
 
 #define KC_LTOG  RGB_TOG
@@ -82,9 +82,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_RAISE] = LAYOUT_kc( \
   //,-----------------------------------------.                ,-----------------------------------------.
-        ESC,   F12,    F5,  LPRN,  RPRN,  UNDS,                   MINS,     7,     8,     9,   DOT,  BSPC,\
+        ESC, XXXXX,   F5,  LPRN,  RPRN,  UNDS,                   MINS,     7,     8,     9,   DOT,  BSPC,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
-      CTLTB, MUTE,     F2,  LCBR,  RCBR,  PIPE,                   PLUS,     4,     5,     6,  SLSH,  ASTR,\
+      CTLTB,  MUTE,    F2,  LCBR,  RCBR,  PIPE,                   PLUS,     4,     5,     6,  SLSH,  ASTR,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
        LSFT, XXXXX, XXXXX,  LBRC,  RBRC,  BSLS,                      0,     1,    2 ,    3,   EQL,   RSFT,\
   //|------+------+------+------+------+------+------|  |------+------+------+------+------+------+------|
@@ -96,7 +96,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,-----------------------------------------.                ,-----------------------------------------.
         ESC,  EXLM,    AT,  HASH,   DLR,  PERC,                   CIRC,  AMPR,  ASTR,  LPRN,  RPRN,  BSPC,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
-       TILD, GRAVE, XXXXX, XXXXX,   ENT, XXXXX,                   LEFT,  DOWN,    UP, RIGHT,  HOME,   END,\
+       TILD, GRAVE, XXXXX,   F12,   ENT, XXXXX,                   LEFT,  DOWN,    UP, RIGHT,  HOME,   END,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
        LSFT, XXXXX, XXXXX, XXXXX,   SPC, RIGHT,                  ALTKN, GUIEI,  LBRC,  RBRC,  BSLS,  TILD,\
   //|------+------+------+------+------+------+------|  |------+------+------+------+------+------+------|
@@ -108,7 +108,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,-----------------------------------------.                ,-----------------------------------------.
   VOLD,MS_WH_LEFT, MS_WH_RIGHT, MS_UP,   VOLU,  MUTE,           SWITCH_QWERTY, XXXXX, XXXXX, XXXXX, XXXXX, XXXXX,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
-  XXXXX, LTOG, MS_LEFT, MS_DOWN, MS_RIGHT, XXXXX,               XXXXX, MS_BTN1,MS_BTN2, XXXXX, INSPECT, SCREENSOT_MAC,\
+  XXXXX, LTOG, MS_LEFT, MS_DOWN, MS_RIGHT, XXXXX,               XXXXX, MS_BTN1,MS_BTN2, XXXXX, CHORE, SCREENSOT_MAC,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
   XXXXX,LMOD, LHUD,MS_WH_UP,MS_WH_DOWN, XXXXX,                  XXXXX, XXXXX, XXXXX, MS_ACCEL1, MS_ACCEL2, XXXXX,\
   //|------+------+------+------+------+------+------|  |------+------+------+------+------+------+------|
@@ -231,11 +231,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         return false;
         break;
     case SCREENSOT_MAC:
-      SEND_STRING(SS_LGUI(SS_LSFT(SS_LCTL("4"))));
+      if(record->event.pressed){
+        SEND_STRING(SS_LGUI(SS_LSFT(SS_LCTL("4"))));
+      }
       break;
-    case INSPECT:
-      SEND_STRING(SS_LGUI(SS_RALT("i")));
-      return false;
+    case CHORE:
+     if (record->event.pressed) {
+       SEND_STRING("gcm 'chore: '"SS_TAP(X_LEFT));
+     }
       break;
   }
   return true;
